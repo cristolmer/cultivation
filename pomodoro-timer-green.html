@@ -1,3 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pomodoro Timer (Green)</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: transparent;
+      color: #2b6e4a; /* Dark green text */
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      display: inline-block;
+      padding: 0;
+    }
+
+    .timer {
+      font-size: 2rem;
+      font-weight: bold;
+      margin: 0 0 10px 0;
+    }
+
+    .controls, .duration {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 8px 0;
+    }
+
+    select, button {
+      background-color: #2b6e4a;
+      border: none;
+      color: white;
+      padding: 6px 14px;
+      font-size: 0.9rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover, select:hover {
+      background-color: #21533a;
+    }
+
+    select {
+      padding: 5px 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="duration">
+      <label for="duration">Session:</label>
+      <select id="duration" onchange="changeDuration()">
+        <option value="15">15 min</option>
+        <option value="25" selected>25 min</option>
+        <option value="30">30 min</option>
+        <option value="45">45 min</option>
+      </select>
+    </div>
+    <div class="timer" id="timer">25:00</div>
+    <div class="controls">
+      <button onclick="startTimer()">Start</button>
+      <button onclick="pauseTimer()">Pause</button>
+      <button onclick="resetTimer()">Reset</button>
+    </div>
+    <audio id="alarmSound" src="https://www.soundjay.com/buttons/sounds/beep-07.mp3" preload="auto"></audio>
+  </div>
+
 <script>
   let timer;
   let running = false;
@@ -65,3 +137,6 @@
   // Initialize the timer display on page load
   window.addEventListener('DOMContentLoaded', updateDisplay);
 </script>
+
+</body>
+</html>
