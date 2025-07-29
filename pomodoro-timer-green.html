@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pomodoro Timer (Green)</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: transparent;
+      color: #2b6e4a; /* Dark green text */
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      display: inline-block;
+      padding: 0;
+    }
+
+    .timer {
+      font-size: 2rem;
+      font-weight: bold;
+      margin: 0 0 10px 0;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 0;
+    }
+
+    button {
+      background-color: #2b6e4a; /* Main green */
+      border: none;
+      color: white;
+      padding: 6px 14px;
+      font-size: 0.9rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #21533a; /* Darker hover green */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="timer" id="timer">25:00</div>
+    <div class="controls">
+      <button onclick="startTimer()">Start</button>
+      <button onclick="pauseTimer()">Pause</button>
+      <button onclick="resetTimer()">Reset</button>
+    </div>
+  </div>
+
+  <script>
+    let timer;
+    let minutes = 25;
+    let seconds = 0;
+    let running = false;
+
+    function updateDisplay() {
+      const minStr = minutes.toString().padStart(2, '0');
+      const secStr = seconds.toString().padStart(2, '0');
+      document.getElementById('timer').textContent = `${minStr}:${secStr}`;
+    }
+
+    function tick() {
+      if (minutes === 0 && seconds === 0) {
+        clearInterval(timer);
+        running = false;
+        alert("Time's up! Take a break 🍵");
+        return;
+      }
+      if (seconds === 0) {
+        minutes--;
+        seconds = 59;
+      } else {
+        seconds--;
+      }
+      updateDisplay();
+    }
+
+    function startTimer() {
+      if (!running) {
+        timer = setInterval(tick, 1000);
+        running = true;
+      }
+    }
+
+    function pauseTimer() {
+      clearInterval(timer);
+      running = false;
+    }
+
+    function resetTimer() {
+      clearInterval(timer);
+      running = false;
+      minutes = 25;
+      seconds = 0;
+      updateDisplay();
+    }
+
+    updateDisplay();
+  </script>
+</body>
+</html>
