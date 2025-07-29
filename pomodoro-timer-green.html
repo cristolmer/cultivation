@@ -24,15 +24,15 @@
       margin: 0 0 10px 0;
     }
 
-    .controls {
+    .controls, .duration {
       display: flex;
       justify-content: center;
       gap: 8px;
-      margin: 0;
+      margin: 8px 0;
     }
 
-    button {
-      background-color: #2b6e4a; /* Main green */
+    select, button {
+      background-color: #2b6e4a;
       border: none;
       color: white;
       padding: 6px 14px;
@@ -41,19 +41,33 @@
       cursor: pointer;
     }
 
-    button:hover {
-      background-color: #21533a; /* Darker hover green */
+    button:hover, select:hover {
+      background-color: #21533a;
+    }
+
+    select {
+      padding: 5px 10px;
     }
   </style>
 </head>
 <body>
   <div class="container">
+    <div class="duration">
+      <label for="duration">Session:</label>
+      <select id="duration" onchange="changeDuration()">
+        <option value="15">15 min</option>
+        <option value="25" selected>25 min</option>
+        <option value="30">30 min</option>
+        <option value="45">45 min</option>
+      </select>
+    </div>
     <div class="timer" id="timer">25:00</div>
     <div class="controls">
       <button onclick="startTimer()">Start</button>
       <button onclick="pauseTimer()">Pause</button>
       <button onclick="resetTimer()">Reset</button>
     </div>
+    <audio id="alarmSound" src="https://www.soundjay.com/buttons/sounds/beep-07.mp3" preload="auto"></audio>
   </div>
 
   <script>
@@ -72,6 +86,7 @@
       if (minutes === 0 && seconds === 0) {
         clearInterval(timer);
         running = false;
+        document.getElementById('alarmSound').play();
         alert("Time's up! Take a break 🍵");
         return;
       }
@@ -99,9 +114,14 @@
     function resetTimer() {
       clearInterval(timer);
       running = false;
-      minutes = 25;
+      const selectedDuration = parseInt(document.getElementById('duration').value);
+      minutes = selectedDuration;
       seconds = 0;
       updateDisplay();
+    }
+
+    function changeDuration() {
+      resetTimer();
     }
 
     updateDisplay();
