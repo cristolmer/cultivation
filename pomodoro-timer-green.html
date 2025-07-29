@@ -70,73 +70,71 @@
     <audio id="alarmSound" src="https://www.soundjay.com/buttons/sounds/beep-07.mp3" preload="auto"></audio>
   </div>
 
-<script>
-  let timer;
-  let running = false;
-  let targetTime = null;
+  <script>
+    let timer;
+    let running = false;
+    let targetTime = null;
 
-  function updateDisplay() {
-    const now = Date.now();
+    function updateDisplay() {
+      const now = Date.now();
 
-    let mins, secs;
-    if (targetTime) {
-      const remaining = Math.max(0, targetTime - now);
-      mins = Math.floor(remaining / 60000);
-      secs = Math.floor((remaining % 60000) / 1000);
+      let mins, secs;
+      if (targetTime) {
+        const remaining = Math.max(0, targetTime - now);
+        mins = Math.floor(remaining / 60000);
+        secs = Math.floor((remaining % 60000) / 1000);
 
-      if (remaining <= 0) {
-        clearInterval(timer);
-        running = false;
-        document.getElementById('alarmSound').play();
-        alert("Time's up! Take a break 🍵");
+        if (remaining <= 0) {
+          clearInterval(timer);
+          running = false;
+          document.getElementById('alarmSound').play();
+          alert("Time's up! Take a break 🍵");
+        }
+      } else {
+        const selectedDuration = parseInt(document.getElementById('duration').value);
+        mins = selectedDuration;
+        secs = 0;
       }
-    } else {
-      const selectedDuration = parseInt(document.getElementById('duration').value);
-      mins = selectedDuration;
-      secs = 0;
+
+      document.getElementById('timer').textContent =
+        `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     }
 
-    document.getElementById('timer').textContent =
-      `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-  }
+    function startTimer() {
+      if (!running) {
+        const currentDisplay = document.getElementById('timer').textContent.split(':');
+        let mins = parseInt(currentDisplay[0]);
+        let secs = parseInt(currentDisplay[1]);
+        const remainingMs = mins * 60000 + secs * 1000;
 
-  function startTimer() {
-    if (!running) {
+        targetTime = Date.now() + remainingMs;
+        timer = setInterval(updateDisplay, 1000);
+        running = true;
+      }
+    }
+
+    function pauseTimer() {
+      clearInterval(timer);
+      running = false;
+
       const currentDisplay = document.getElementById('timer').textContent.split(':');
-      let mins = parseInt(currentDisplay[0]);
-      let secs = parseInt(currentDisplay[1]);
-      const remainingMs = mins * 60000 + secs * 1000;
-
-      targetTime = Date.now() + remainingMs;
-      timer = setInterval(updateDisplay, 1000);
-      running = true;
+      const mins = parseInt(currentDisplay[0]);
+      const secs = parseInt(currentDisplay[1]);
+      targetTime = Date.now() + (mins * 60000) + (secs * 1000);
     }
-  }
 
-  function pauseTimer() {
-    clearInterval(timer);
-    running = false;
+    function resetTimer() {
+      clearInterval(timer);
+      running = false;
+      targetTime = null;
+      updateDisplay();
+    }
 
-    const currentDisplay = document.getElementById('timer').textContent.split(':');
-    const mins = parseInt(currentDisplay[0]);
-    const secs = parseInt(currentDisplay[1]);
-    targetTime = Date.now() + (mins * 60000) + (secs * 1000);
-  }
+    function changeDuration() {
+      resetTimer();
+    }
 
-  function resetTimer() {
-    clearInterval(timer);
-    running = false;
-    targetTime = null;
-    updateDisplay();
-  }
-
-  function changeDuration() {
-    resetTimer();
-  }
-
-  // Initialize the timer display on page load
-  window.addEventListener('DOMContentLoaded', updateDisplay);
-</script>
-
+    window.addEventListener('DOMContentLoaded', updateDisplay);
+  </script>
 </body>
 </html>
