@@ -397,7 +397,7 @@
                 <li><a href="#home">Home</a></li>
                 <li><a href="#game">Game</a></li>
                 <li><a href="#characters">Characters</a></li>
-                <li><a href="#blog">Blog</a></li>
+                <li><a href="/blog.html">Blog</a></li>
                 <li><a href="#shop">Shop <span class="coming-soon">Soon</span></a></li>
             </ul>
         </nav>
@@ -529,5 +529,19 @@
             </p>
         </div>
     </footer>
+    
+    <!-- Netlify Identity Widget -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <script>
+        if (window.netlifyIdentity) {
+            window.netlifyIdentity.on("init", user => {
+                if (!user) {
+                    window.netlifyIdentity.on("login", () => {
+                        document.location.href = "/admin/";
+                    });
+                }
+            });
+        }
+    </script>
 </body>
 </html>
